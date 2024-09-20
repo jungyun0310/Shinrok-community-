@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔍식물 도감🔍</title> 
+    <script src="https://kit.fontawesome.com/71a327e855.js" crossorigin="anonymous"></script>
+    <!-- font awesome 오류 났을때 fas / fab (brand 이미지일 경우) 앞에 추가하여 해결 _버전 오류 -->
+
+    <link rel="stylesheet" href="../public/dictionary.css">
+
+    <link rel="stylesheet" href="../public/main.css" />
+</head>
+
+<body>
+    
+    
+    <!-- ----------------------------- Body 전체 ------------------------------------------------------------------------------------------------------------------------------ -->
+
+    
+    
+    <!-- ----------------------헤더----------------------------------- -->
+    
+    
+<!-- Header -->
+<header id="header">
+    <a href="/" class="logo"><img src="https://jsh-1.s3.ap-northeast-2.amazonaws.com/test/KakaoTalk_20240722_163631321_07.png" alt="무럭이">
+        <strong>MURUK </strong> <span>by ShinRok</span></a>
+    <ul class="icons">
+        {% if user %}
+        <li><a href="#">{{user.nick}}님 환영합니다.</a></li>
+        {% else %}
+        <li><a href="#">로그인 후 이용해주세요.</a></li>
+        {% endif %}
+        <li>
+            <form id="myPageForm" action="/myPage/info" method="post">
+                <a href="#" onclick="document.getElementById('myPageForm').submit(); return false;">마이페이지</a>
+            </form>
+            <!-- <li><a href="/myPage/info" id="myPageLink">마이페이지</a></li> --> 
+        </li>
+        {% if user %}
+        <div class="kakaoLogout">
+            <a href="/user/logout">로그아웃<img src=""></a>
+        </div>
+        {% else %}
+        <div class="kakaoLogin">
+            <a href="/user/login"><img src="https://jsh-1.s3.ap-northeast-2.amazonaws.com/test/kakao_login_small+(1).png"></a>
+        </div>
+        {% endif %}
+    </ul>
+</header>
+
+<!-- ------------------- 최상단 배너 ----------------------- -->
+<section id="Banner">
+    <div class="content">
+        <header>
+            <!-- <h2>오늘의 식물 <br/></h2> -->
+            <img class="murukLogo" src="https://jsh-1.s3.ap-northeast-2.amazonaws.com/board/0f124f526ead2c6d041a0e16c5439fa5" alt="">
+        </header>
+    </div>
+</section>
+<!-- ----------------------------------사이드바---------------------------------- -->
+
+
+    <!-- 왼쪽 사이드바 -->
+    <aside class="leftSidebar">
+        <nav class="topsidebar">
+            <ul>
+                <li><a href="/">HOME</a></li>
+                <li><a href="/board/freeList">자유게시판</a></li>
+                <li><a href="/board/bragList">자랑하기</a></li>
+                <li><a href="/board/hot">인기글</a></li>
+                <li><a href="/board/queslist">질문게시판</a></li>
+            </ul>
+        </nav>
+        <!-- 아래쪽 사이드바(페이지 이동) -->
+        <nav class="underSidebar">
+            <ul>
+                <li><a href="/diary">Diary</a></li>
+                <li><a href="/predict">병충해 진단</a></li>
+                <li id="pointLi"><a href="/dictionary/home">식물 도감</a></li>
+                <li>
+                    <form id="myPageForm" action="/myPage/info" method="post">
+                        <a href="#" onclick="document.getElementById('myPageForm').submit(); return false;">마이페이지</a>
+                    </form>
+                    <!-- <a href="/myPage/info">마이페이지</a> -->
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+
+
+<!-- ----------------------도감----------------------------------- -->
+
+        <div id="dictionary">
+            {% for i in specificPlant %} 
+            <div class="item">
+                <a href="/dictionary/detail?idx={{i.PLANT_IDX}}">
+                    <img src="{{i.PLANT_IMG}}" alt="{{i.PLANT_NAME}}">
+                    <p>{{i.PLANT_NAME}}</p>
+                </a>
+            </div>
+            {% endfor %}
+
+            
+
+            <div class="pagination">
+                
+            </div>
+         
+
+
+            <!-- 페이징 컨트롤 수정 -->
+            <div class="pagination">
+                {% if current_page > 1 %}
+                <a href="?page={{ current_page - 1 }}">&laquo; 이전</a>
+                {% endif %}
+                
+                {% for page in range(first_page, last_page + 1) %}
+                <a href="?page={{ page }}" {% if page == current_page %}class="active"{% endif %}>{{ page }}</a>
+                {% endfor %}
+                
+                {% if current_page < total_pages %}
+                <a href="?page={{ current_page + 1 }}">다음 &raquo;</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <section id="search" class="alt">
+            <form action="/search/plant" method="get" class="detailForm">
+                <div class="searchFooter">
+                    <input type="text" name="q" placeholder="식물 검색" />
+                    <button id="searchbtn"> 검색 </button>
+                </div>
+            </form>
+        </section>
+
+    <script src="../assets/js/dictionary.js"></script>
+</body>
+</html>

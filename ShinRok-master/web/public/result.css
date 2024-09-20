@@ -1,0 +1,167 @@
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+*{
+    font-family: 'Pretendard-Regular';
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    margin: 0;
+}
+/* ----------------------헤더---------------------- */
+
+#top{
+    display: flex;
+    justify-content: center;
+}
+#top img{
+    width: 1400px;
+    height: 200px;
+}
+
+/* .result {
+    background-color: #f56a6a;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    margin-top: 5%;
+    width: 60%;
+    color: #fff;
+    text-align: center;
+
+    margin-bottom: 15px;
+    color: #ffffff;
+    border-bottom: 2px solid #ddd;
+    /* padding-bottom: 5px; */
+
+/* ----------------------컨테이너---------------------- */
+
+#container{
+    display: flex;
+    flex-direction: column;
+    margin: 3%;
+    border: 5px solid #66af4d;
+    border-radius: 45px;
+}
+
+/* ----------------------이미지---------------------- */
+
+#left{
+    width: 40%;
+    height: 70%;
+    /* background-color: aliceblue; */
+    margin-left: 10%;
+}
+#left img{
+    border-radius: 15px;
+    width: 50%;
+    height: 100%;
+}
+
+.plantImage{
+    margin: 10%;
+    width: 50vw; /* 너비를 줄임 */
+    height: 50vh; /* 높이를 줄임 */
+    display: flex;
+    overflow: hidden;
+    object-fit: fill;
+    align-content: center;
+}
+
+/* 윗부분 */
+#title {
+    display: flex;
+    flex-direction: row;
+}
+
+/* ----------------------증상/방제법---------------------- */
+
+#right{
+    width: 40%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+#right 
+
+
+.diseaseSymptom{
+    margin-top: 7%;
+    margin-bottom: 5%;
+    width: 100%;
+    height: 50%;
+    /* background-color: rgb(210, 210, 210); */
+    font-size: 3rem;
+    line-height: 2.0;
+    display: flex;
+    flex-direction: column;
+}
+
+.diseaseSymptom h4{
+    /* border-left: 2px solid #f56a6a; */
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+.controlMethod{
+    margin-top: 5%;
+    margin-bottom: 5%;
+    margin-left: 10%;
+    width: 80%;
+    height: 50%;
+    font-size: large;
+    font-size: 2em;
+    line-height: 1.5;
+    text-align: center;
+}
+
+/* ----------------------버튼---------------------- */
+
+.button {
+    display: flex;
+    flex-direction: row;
+    /* gap: 20px; */
+    /* width: 100%; */
+    margin-top: 10px;
+    /* margin-left: 50%; */
+    /* align-items: center; */
+    justify-content: center;
+    margin-bottom: 8%;
+}
+
+.retry, .goMypage {
+    display: flex;
+    flex-direction: row;
+    /* padding: 12px 24px; */
+    background-color: #f7a2a2;
+    color: #fff;
+    border-color: #fff;
+    text-decoration: none;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    /* box-shadow: 0 4px 6px rgba(219, 103, 103, 0.1); */
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    width: 10vw;
+    height: 5vh;
+    justify-content: center;
+    align-items: center;
+}
+.goMypage{
+    margin-left: 3%;
+}
+
+.retry:hover, .goMypage:hover {
+    background-color: #f56a6a;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+}

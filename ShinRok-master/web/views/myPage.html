@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyPage</title>
+    <link rel="stylesheet" href="../public/myPage.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <img src="{{ userData.USER_PICTURE}}" alt="프로필사진" class="profile-photo">
+            <button class="nickname">{{ userData.USER_NICK }} <span>수정</span></button>
+
+            <button class="linked-accounts">{{userData.USER_NAME}}/{{userData.SNS_PROVIDER | upper}}</button>
+            <form action="/myPage/delete" method="POST" style="display: inline;" class="delete-account">
+                <button type="submit" >회원 탈퇴</button>
+            </form>
+            <button id="mainBack" onclick="window.location.href='/'">MainPage</button>
+
+        </div>
+        <div class="content">
+            <div class="posts-list">
+                <h2 id="myListTop">작성 글 목록</h2>
+                <table class="myPostList">
+                    <tr id="myListTr">
+                        <td>카테고리</td>
+                        <td>게시글 제목</td>
+                        <td>게시날짜</td>
+                        <td>조회수</td>
+                        <td id="mycommend">댓글수</td>
+                    </tr>
+                    {% if boardData and boardData.length > 0 %}
+                        {% for i in boardData %}
+                        <tr class="myUnderList" onclick="window.location.href='/board/detailPost?idx={{i.BOARD_IDX}}'">
+                            <td>{{i.BOARD_CATE}}</td>
+                            <td>{{i.BOARD_TITLE}}</td>
+                            <td>{{i.BOARD_DATE| date("YYYY-MM-DD HH:mm") }}</td>
+                            <td>{{i.BOARD_COUNT}}</td>
+                            <td id="undercommend">{{i.COMMENT_COUNT}}</td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5" style="text-align: center;">작성한 내용이 없습니다</td>
+                        </tr>
+                    {% endif %}
+                </table>
+            </div>
+            <div class="diagnosis-records">
+                <h2 id="myListTop2">병충해 진단 기록</h2>
+                <table class="mybugList">
+                    <tr id="bugListTr">
+                        <td>작물명</td>
+                        <td>병명</td>
+                        <td>증상</td>
+                        <td id="lasttd">시간</td>    
+                    </tr>
+                    {% for i in dssData %}
+                    <tr class="bugUnderList" onclick="submitPostRequest('{{ user.idx }}', '{{ i.DSS_IDX }}')">
+                        <td>{{i.DSS_PLANT}}</td>
+                        <td>{{i.DSS_STATE}}</td>
+                        <td>{{i.DSS_DISC}}</td>
+                        <td id="undercommend">{{i.DSS_DATE | date("YY-MM-DD HH:mm")}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 수정 클릭시 뜨는 Modal  -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>닉네임 수정하기</h2>
+            <form id="updateNicknameForm" action="/mypage/update" method="POST">
+                <div class="nickModal">
+                    <input type="text" name="q" placeholder="닉네임 입력" required>
+                    <button type="submit">완료</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("mainBack").addEventListener("click", (e) => {
+            e.preventDefault();
+            window.location.href = "/";
+        });
+
+        // 모달 요소 가져오기
+        var modal = document.getElementById("myModal");
+        var btn = document.querySelector(".nickname");
+        var span = document.querySelector(".modal .close");
+
+        // 모달 열기
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+        // x 클릭 시 모달 닫기
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+        // 모달 외부 클릭 시 닫기
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // POST 요청을 보내는 함수
+        function submitPostRequest(userIdx, dssIdx) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/mypage/resultdetail';
+
+            const userField = document.createElement('input');
+            userField.type = 'hidden';
+            userField.name = 'user_idx';
+            userField.value = userIdx;
+
+            const dssField = document.createElement('input');
+            dssField.type = 'hidden';
+            dssField.name = 'dss_idx';
+            dssField.value = dssIdx;
+
+            form.appendChild(userField);
+            form.appendChild(dssField);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    </script>
+</body>
+</html>

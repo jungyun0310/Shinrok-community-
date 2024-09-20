@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>자유게시판🐌</title>
+
+    <script src="https://kit.fontawesome.com/71a327e855.js" crossorigin="anonymous"></script>
+    <!-- font awesome 오류 났을때 fas / fab (brand 이미지일 경우) 앞에 추가하여 해결 _버전 오류 -->
+
+    <link rel="stylesheet" href="../public/freeList.css">
+</head>
+<body>
+    <!-- Header -->
+    <header id="header">
+        <a href="/" class="logo"><img src="https://jsh-1.s3.ap-northeast-2.amazonaws.com/test/KakaoTalk_20240722_163631321_07.png" alt="무럭이">
+            <strong>MURUK </strong> <span>by ShinRok</span></a>
+        <ul class="icons">
+            {% if user %}
+            <li><a href="#">{{user.nick}}님 환영합니다.</a></li>
+            {% else %}
+            <li><a href="#">로그인 후 이용해주세요.</a></li>
+            {% endif %}
+            <li>
+                <form id="myPageForm" action="/myPage/info" method="post">
+                    <a href="#" onclick="document.getElementById('myPageForm').submit(); return false;">마이페이지</a>
+                </form>
+                <!-- <li><a href="/myPage/info" id="myPageLink">마이페이지</a></li> --> 
+            </li>
+            {% if user %}
+            <div class="kakaoLogout">
+                <a href="/user/logout">로그아웃<img src=""></a>
+            </div>
+            {% else %}
+            <div class="kakaoLogin">
+                <a href="/user/login"><img src="https://jsh-1.s3.ap-northeast-2.amazonaws.com/test/kakao_login_small+(1).png"></a>
+            </div>
+            {% endif %}
+        </ul>
+    </header>
+
+    <!-- ------------------- 최상단 배너 ----------------------- -->
+    <section id="banner">
+        <div class="content">
+            <header>
+                <!-- <h2>오늘의 식물 <br/></h2> -->
+                <img class="murukLogo" src="https://jsh-1.s3.ap-northeast-2.amazonaws.com/board/63f25f8a5b4f5ebf2c08e948eaa4ded2" alt="">
+            </header>
+        </div>
+    </section>
+        
+    <!-- ------------------ 왼쪽 사이드바 ---------------------- -->
+    <aside class="leftSidebar">
+        <nav class="topsidebar">
+            <ul>
+                <!-- <li><a href="/plusPost"><button id="postingBtn"><i class="fa-solid fa-pen-to-square"></i> 게시글쓰기</button></a></li> -->
+                <!-- 메인으로 돌아가는 버튼 -->
+                <li><a href="/" id="homeLink">HOME</a></li>
+                <li><a href="/board/freeList" id="freeListLink">자유게시판</a></li>
+                <li><a href="/board/bragList" id="bragListLink">자랑하기</a></li>
+                <li><a href="/board/hot" id="hotListLink">인기글</a></li>
+                <li><a href="/board/queslist" id="quesListLink">질문게시판</a></li>
+            </ul>
+        </nav>
+
+        <!-- ----------------- 아래쪽 사이드바(페이지 이동) ----------------- -->
+        <nav class="underSidebar">
+            <ul>
+                <li><a href="/diary" id="diaryLink">Diary</a></li>
+                <li><a href="/predict" id="predictLink">병충해 진단</a></li>
+                <li><a href="/dictionary/home" id="dictionaryLink">식물 도감</a></li>
+                <li>
+                    <form id="myPageForm" action="/myPage/info" method="post">
+                        <a href="#" onclick="document.getElementById('myPageForm').submit(); return false;">마이페이지</a>
+                    </form>
+                    <!-- <a href="/myPage/info">마이페이지</a> -->
+                </li>
+            </ul>
+        </nav>
+        
+    </aside>
+
+    <!-- -------------------------- 자유게시판 목록 ---------------------------------------------- -->
+    <section id="freeSection">
+        <div class="headerText">
+            <img id="headerImage" src="" alt="">
+            <h1 id="headerTitle"></h1>
+        </div>
+        <table class="freetable">
+            <tr class="postHead">
+                <th>번호</th>
+                <th>구분</th>
+                <th class="postTitle">제목</th>
+                <th>작성자</th>
+                <th>작성날짜</th>
+                <th>조회</th>
+                <th>추천</th>
+                <th></th>
+            </tr>
+            
+            {% for i in boardFree %}
+                <tr class="contentBody" onclick="location.href='/board/detailPost?idx={{ i.BOARD_IDX }}'">
+                    <td>{{ loop.index }}</td>
+                    <td>{{i.BOARD_CATE}}</td>
+                    <td class="content">{{ i.BOARD_TITLE }} ({{ i.COMMENT_COUNT }})</td>
+                    <td>{{ i.USER_NICK }}</td>
+                    <td>{{ i.BOARD_DATE | date("MM-DD HH:mm") }}</td>
+                    <td>{{ i.BOARD_COUNT }}</td>
+                    <td>{{i.BOARD_RECOMMEND}}</td>
+                    <td></td>
+                   
+                    <td>
+                        <input type="hidden" value="{{ i.BOARD_IDX }}">
+                    </td>
+                </tr>
+            {% endfor %}
+            
+        </table>
+        
+        <!-- 하단 페이징 -->
+        <div class="freePaging">
+            {% if currentPage > 1 %}
+                <a href="?page={{ currentPage - 1 }}">이전</a>
+            {% endif %}
+            
+            {% for page in range(1, totalPages + 1) %}
+                {% if page == currentPage %}
+                    <span>{{ page }}</span>
+                {% else %}
+                    <a href="?page={{ page }}">{{ page }}</a>
+                {% endif %}
+            {% endfor %}
+            
+            {% if currentPage < totalPages %}
+                <a href="?page={{ currentPage + 1 }}">다음</a>
+            {% endif %}
+        </div>
+
+        <!-- 글쓰기 버튼 -->
+        <div id="mainPlusBtn">
+            <a href="/plusPost"><button type="button">글쓰기</button></a>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const headerText = document.querySelector('.headerText');
+            const headerImage = document.getElementById('headerImage');
+            const headerTitle = document.getElementById('headerTitle');
+            const currentPath = window.location.pathname;
+
+            const banners = {
+                '/board/freeList': {
+                    img: 'https://jsh-1.s3.ap-northeast-2.amazonaws.com/board/dd1d2f1de32038ed1179237e055037f1',
+                },
+                '/board/hot': {
+                    img: 'https://jsh-1.s3.ap-northeast-2.amazonaws.com/board/5f3c87c14e4e101dfbf037eb894ee822',
+                }
+            };
+
+            if (banners[currentPath]) {
+                headerImage.src = banners[currentPath].img;
+                headerTitle.textContent = banners[currentPath].title;
+                headerText.style.display = 'block';
+            } else {
+                headerText.style.display = 'none';
+            }
+
+            const links = {
+                '/': 'homeLink',
+                '/board/freeList': 'freeListLink',
+                '/board/bragList': 'bragListLink',
+                '/board/hot': 'hotListLink',
+                '/board/queslist': 'quesListLink',
+                '/diary': 'diaryLink',
+                '/predict': 'predictLink',
+                '/dictionary/home': 'dictionaryLink'
+            };
+
+            const activeLinkId = links[currentPath];
+            if (activeLinkId) {
+                document.getElementById(activeLinkId).classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>

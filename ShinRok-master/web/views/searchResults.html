@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>검색 결과</h1>
+    <p>'{{ searchQuery }}'에 대한 검색 결과입니다.</p>
+    {% if searchResults.length === 0 %}
+        <p>검색 결과가 없습니다.</p>
+    {% else %}
+        <ul>
+            {% for result in searchResults %}
+                <li>
+                    <a href="/detailPost?idx={{ result.BOARD_IDX }}">{{ result.BOARD_TITLE }}</a>
+                    <p>{{ result.BOARD_CONTENT }}</p>
+                    <p>작성자: {{ result.USER_NICK }}</p>
+                    <p>작성일: {{ result.BOARD_DATE }}</p>
+                    <p>댓글 수: {{ result.COMMENT_COUNT }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <div>
+        {% for i in range(1, totalPages + 1) %}
+            <a href="/search?q={{ searchQuery }}&page={{ i }}">{{ i }}</a>
+        {% endfor %}
+    </div>
+</body>
+</html>

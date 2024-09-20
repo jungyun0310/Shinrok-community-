@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../public/result.css">
+</head>
+<body>
+
+    <div id="top">
+        <img src="https://jsh-1.s3.ap-northeast-2.amazonaws.com/board/189cb7476b08bcdc1d2cc904291f7b3c" alt="">
+        
+    </div>
+    {% for i in res %}
+    <div id="container">
+        <div id="title">
+            <div id="left">
+                <div class="plantImage"><img src="{{ i.DSS_IMG }}" alt=""></div>
+            </div>
+
+            <div id="right">
+                <div class="diseaseSymptom">
+                    <h4>🐛 질병 : {{ i.DSS_STATE }}</h4>
+                    <h5>증상 : {{ i.DSS_DISC }}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="controlMethod">방제법 : {{ i.DSS_PREV }} </div>
+    </div>
+    
+
+    {% endfor %}
+    <div class="button">
+        <button class="retry" onclick="window.location.href='/'">MainPage</button>
+        <button class="goMypage" onclick="redirectToMypage()">MyPage</button>
+    </div>
+
+    <script>
+        function redirectToMypage() {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/mypage/info';
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+    </script>
+
+</body>
+</html>

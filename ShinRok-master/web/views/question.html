@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ question.BOARD_TITLE }}</title>
+    <script src="https://kit.fontawesome.com/71a327e855.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../public/question.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header id="header">
+        <a href="/" class="logo"><img src="https://jsh-1.s3.ap-northeast-2.amazonaws.com/test/KakaoTalk_20240722_163631321_07.png" alt="무럭이">
+            <strong>MURUK </strong> <span>by ShinRok</span></a>
+        <ul class="icons">
+            {% if user %}
+            <li><a href="#">{{user.nick}}님 환영합니다.</a></li>
+            {% else %}
+            <li><a href="#">로그인 후 이용해주세요.</a></li>
+            {% endif %}
+            <li>
+                <form id="myPageForm" action="/myPage/info" method="post">
+                    <a href="#" onclick="document.getElementById('myPageForm').submit(); return false;">마이페이지</a>
+                </form>
+                <!-- <li><a href="/myPage/info" id="myPageLink">마이페이지</a></li> --> 
+            </li>
+            {% if user %}
+            <div class="kakaoLogout">
+                <a href="/user/logout">로그아웃<img src=""></a>
+            </div>
+            {% else %}
+            <div class="kakaoLogin">
+                <a href="/user/login"><img src="https://jsh-1.s3.ap-northeast-2.amazonaws.com/test/kakao_login_small+(1).png"></a>
+            </div>
+            {% endif %}
+        </ul>
+    </header>
+    <!-- 최상단 배너 -->
+    <section id="banner">
+        <div class="content">
+            <header>
+                <img class="murukLogo"
+                    src="https://jsh-1.s3.ap-northeast-2.amazonaws.com/board/63f25f8a5b4f5ebf2c08e948eaa4ded2" alt="">
+            </header>
+        </div>
+    </section>
+
+    <!-- 왼쪽 사이드바 -->
+    <aside class="leftSidebar">
+        <nav class="topsidebar">
+            <ul>
+                <li><a href="/">HOME</a></li>
+                <li><a href="/board/freeList">자유게시판</a></li>
+                <li><a href="/board/bragList">자랑하기</a></li>
+                <li><a href="/board/hotPost">인기글</a></li>
+                <li id="pointLi"><a href="/board/queslist">질문게시판</a></li>
+
+            </ul>
+        </nav>
+        <!-- 아래쪽 사이드바(페이지 이동) -->
+        <nav class="underSidebar">
+            <ul>
+                <li><a href="/diary">Diary</a></li>
+                <li><a href="/predict">병충해 진단</a></li>
+                <li><a href="/dictionary/home">식물 도감</a></li>
+                <li>
+                    <form id="myPageForm" action="/myPage/info" method="post">
+                        <a href="#" onclick="document.getElementById('myPageForm').submit(); return false;">마이페이지</a>
+                    </form>
+                    <!-- <a href="/myPage/info">마이페이지</a> -->
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Body 전체 -->
+    <div class="main-content">
+        <!-- 질문 내용 -->
+        <div class="question-section">
+            <table class="table">
+
+
+        <!-- 게시글 상세페이지 -->
+        <table class="table">
+            {% if user %}
+            <input type="hidden" name="user_idx" value="{{user.idx}}">
+            {% endif %}
+
+           
+
+            <!-- 가로선 추가 -->
+            <tr>
+                <td colspan="6">
+                    <div class="horizontal-line"></div>
+                </td>
+            </tr>
+
+
+
+            <!-- ------------------- 게시물 내용이 보이는 부분 ----------------- -->
+            <!-- 질문자 내용-->
+            <tr class="but">
+
+                {% if user %}
+                <input type="hidden" name="user_idx" value="{{user.idx}}">
+                {% endif %}
+
+
+                <!-- 게시물 제목부분 -->
+                <tr>
+                    <td colspan="6">
+                        <h4 id="category">카테고리>{{question.BOARD_CATE}} </h4>
+                    </td>
+                </tr>
+
+                <!-- 타이틀 제목 -->
+                <tr>
+                    <td colspan="4">
+                        <h2 id="titleName">{{ question.BOARD_TITLE }}</h2>
+                    </td>
+                </tr>
+
+                <tr id="spaceTitle">
+
+                    <td rowspan="3" id="profilePic"><img src='{{question.USER_PICTURE}}'></td>
+                    <td id="userNick"> {{ question.USER_NICK }}</td>
+                    <tr class="titleList">
+                        <td id="titleDate" rowspan="2">{{ question.BOARD_DATE | date("YYYY-MM-DD HH:mm") }}</td>
+                    </tr>
+                    <td>
+                        {% if user.idx == question.USER_IDX %}
+                        <td id="changeBtn"><a href="/board/changePost?board_idx={{ question.BOARD_IDX }}" class="change_post">
+                            <button type="button">수정하기</button></a></td>
+                        {% endif %}
+                        {% if user.idx == question.USER_IDX or user.category == 'admin' %}
+                        <td id="deleteBtn">
+                            <button type="button" onclick="deletePost('{{ question.BOARD_IDX }}')">삭제하기</button>
+                        </td>
+                        {% endif %}
+                    </td>
+                </tr>
+
+                <!-- 가로선 추가 -->
+                <tr>
+                    <td colspan="6">
+                        <div class="horizontal-line"></div>
+                    </td>
+                </tr>
+                <!-- ------------------- 게시물 내용이 보이는 부분 ----------------- -->
+                <!-- 질문자 내용-->
+                <tr class="but">
+                    {% if user %}
+                    <input type="hidden" name="idx" value={{user.idx}}>
+                    {% endif %}
+                    <td class="addImage" colspan="5">
+                        <!-- 이미지 혹은 내용을 넣을 공간 -->
+                        {% if question.BOARD_IMG %}
+                        <img src="{{ question.BOARD_IMG }}" alt="게시글 이미지" id="postImg">
+                        {% endif %}
+                        <br> <br>
+                        <span>{{ question.BOARD_CONTENT }}</span>
+                        <div id="chochunIcons">
+                            <div id="chochunText" onclick="recommendPost('{{ question.BOARD_IDX }}')">
+                                <img src="https://jsh-1.s3.ap-northeast-2.amazonaws.com/board/ca3c268ca229e08abeed21f39e37bae9" alt="">
+                                <h4><strong>추천하기</strong></h4>
+                                <h4 id="recommendCount">{{post.BOARD_RECOMMEND}}</h4>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                
+                
+                <tr><td colspan="6" >
+                <div id="commentListForm">
+                    <!-- 답변 작성 폼 -->
+                    <form action="/board/answerUpload" class="answerForm" method="GET">
+                        <div class="answer-section">
+                            <h3><span>📝</span>답변 작성</h3>
+                            <div id="questionBtn">
+                                <textarea placeholder="답변을 입력하세요" name="content" id="areacontent"></textarea>
+                                <button type="submit">답변하기</button>
+                            </div>
+                        </div>
+                        <input type="hidden" name="board_idx" value="{{question.BOARD_IDX}}">
+                        <input type="hidden" name="user_idx" value="{{user.idx}}">
+                    
+                    </form>
+        
+                    <!-- 답변 목록 -->
+                    <div class="answers-section">
+                        <h3>답변 목록</h3>
+                        
+                        <td>
+                        {% for i in answer %}
+                        <div class="answer">
+                            <tr>
+                                <td rowspan="2" class="profilePic"><img src='{{i.USER_PICTURE}}' alt="프로필 사진"></td>
+                                <td class="usernick">{{ i.USER_NICK }}</td>
+                            </tr>
+                            <tr>
+                                <td class="answerdate">{{ i.BOARD_DATE | date("YYYY-MM-DD HH:mm") }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" class="answerContent">
+                                    {% if i.BOARD_IMG %}
+                                    <img src="{{ i.BOARD_IMG }}" alt="답변 이미지" class="answerImg">
+                                    {% endif %}
+                                    <p>{{ i.ANSWER_CONTENT }}</p>
+                                </td>
+                            </tr>
+                        </div></td>
+                        {% endfor %}
+                    </div>
+                </div>
+                </td></tr>
+                
+
+
+            </table>
+        </div>
+
+        
+        
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        
+        function deletePost(boardIdx) {
+            axios.get(`http://localhost:3000/board/delete?idx=${boardIdx}`)
+                .then(response => {
+                    if (response.data.success) {
+                        alert(response.data.message);
+                        // 성공적으로 삭제된 경우, 메인 페이지로 이동하거나 다른 적절한 페이지로 이동
+                        window.location.href = '/';
+                    } else {
+                        alert('게시글 삭제에 실패했습니다.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+           //게시글 추천 함수
+           function recommendPost(boardIdx) {
+            axios.post('/board/recommend', { idx: boardIdx })
+                .then(response => {
+                    if (response.data.success) {
+                        alert(response.data.message);
+                        document.getElementById('recommendCount').innerText = response.data.recommendCount;
+                    } else {
+                        alert(response.data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+</body>
+
+</html>

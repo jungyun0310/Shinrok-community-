@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 작성 📝</title>
+    <script src="https://kit.fontawesome.com/71a327e855.js" crossorigin="anonymous"></script>
+		<!-- font awesome 오류 났을때 fas / fab (brand 이미지일 경우) 앞에 추가하여 해결 _버전 오류 -->
+
+    <link rel="stylesheet" href="../public/plusPost.css">
+</head>
+<body>
+    <!-- Header -->
+    <header id="header">
+        <a href="/" class="logo"><img src="https://jsh-1.s3.ap-northeast-2.amazonaws.com/test/KakaoTalk_20240722_163631321_07.png" alt="무럭이">
+            <strong>MURUK </strong> <span>by ShinRok</span></a>
+        <ul class="icons">
+            {% if user %}
+            <li><a href="#">{{user.nick}}님 환영합니다.</a></li>
+            {% else %}
+            <li><a href="#">로그인 후 이용해주세요.</a></li>
+            {% endif %}
+            <li>
+                <form id="myPageForm" action="/myPage/info" method="post">
+                    <a href="#" onclick="document.getElementById('myPageForm').submit(); return false;">마이페이지</a>
+                </form>
+                <!-- <li><a href="/myPage/info" id="myPageLink">마이페이지</a></li> --> 
+            </li>
+            {% if user %}
+            <div class="kakaoLogout">
+                <a href="/user/logout">로그아웃<img src=""></a>
+            </div>
+            {% else %}
+            <div class="kakaoLogin">
+                <a href="/user/login"><img src="https://jsh-1.s3.ap-northeast-2.amazonaws.com/test/kakao_login_small+(1).png"></a>
+            </div>
+            {% endif %}
+        </ul>
+    </header>
+
+    <!-- ------------------- 최상단 배너 ----------------------- -->
+    <section id="banner">
+        <div class="content">
+            <header>
+                <!-- <h2>오늘의 식물 <br/></h2> -->
+                <img class="murukLogo" src="https://jsh-1.s3.ap-northeast-2.amazonaws.com/board/63f25f8a5b4f5ebf2c08e948eaa4ded2" alt="">
+            </header>
+            <!-- <ul class="actions">
+                <li><a href="#">자세히 보러가기 <i class="fa-solid fa-right-long"></i></a></li>
+            </ul> -->
+        </div>
+    </section>
+        
+  
+    <!-- 왼쪽 사이드바 -->
+    <aside class="leftSidebar">
+        <nav class="topsidebar">
+            <ul>
+                <li><a href="/">HOME</a></li>
+                <li id="pointLi"><a href="/board/freeList">자유게시판</a></li>
+                <li><a href="/board/bragList">자랑하기</a></li>
+                <li><a href="/board/hot">인기글</a></li>
+                <li><a href="/board/queslist">질문게시판</a></li>
+            </ul>
+        </nav>
+        <!-- 아래쪽 사이드바(페이지 이동) -->
+        <nav class="underSidebar">
+            <ul>
+                <li><a href="/diary">Diary</a></li>
+                <li><a href="/predict">병충해 진단</a></li>
+                <li><a href="/dictionary/home">식물 도감</a></li>
+                <li>
+                    <form id="myPageForm" action="/myPage/info" method="post">
+                        <a href="#" onclick="document.getElementById('myPageForm').submit(); return false;">마이페이지</a>
+                    </form>
+                    <!-- <a href="/myPage/info">마이페이지</a> -->
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+
+  <!-- ----------------------------- Body 전체 ------------------------------------------------------------------------------------------------------------------------------ -->
+    <form action="/board/upload" method="post" enctype="multipart/form-data" class="plusPostForm">
+        
+        <!-- ---------------- 글쓰기 작성 폼 ---------------------- -->
+        <section class="table"> 
+            {% if user %}
+            <input type="hidden" name="idx" value={{user.idx}}>
+            {% endif %}
+            <div class="postHeader">
+                <img src="https://jsh-1.s3.ap-northeast-2.amazonaws.com/board/02f5efb7ab096d8dd4138641a8470780" alt="">
+                <div id="headerPOST">
+                    <h2 id="postWrite">글쓰기</h2>
+                    <p>식물에 관한 정보를 다른사람과 공유해보세요.</p>
+                </div>
+            </div>
+
+            <!-- ---------- 글 제목 입력란 ------------ -->
+            <div class="boardTitle">
+                <dl>
+                    <dt>글 제목</dt>
+                    <dd><input type="text" placeholder="제목을 입력하세요" name="title" autofocus></dd>
+                </dl>
+            </div>
+
+            <!-- ------------- 카테고리 ----------------- -->
+            <div class="categoty">
+                <select name="category">
+                    <option value="">카테고리 선택</option>
+                    <option value="자유">자유게시판</option>
+                    <option value="자랑">자랑하기</option>
+                    <option value="질문">질문게시판</option>
+                </select>
+            </div>
+
+            <!-- ------------- 내용 작성 ----------------- -->
+            <div class="conheader">
+                <dt>Comment</dt>
+                <dd><textarea placeholder="내용을 입력하세요" name="content"></textarea></dd>
+            </div>
+
+            <!-- ----------- 이미지 파일 업로드 ------------ -->
+            <div class="fileUpload">
+                <dd>
+                    <input type="file" name="image" accept="image/*" onchange="loadFile(this)">
+                    <!-- <div class="addImage" id="image-show"> </div> -->
+                </dd>
+            </div>
+
+            <!-- 등록 버튼 -->
+            <div id="footer">
+                <div id="uploadBtn"><input type="submit" value="등록"></div>
+                <div id="cancelBtn"><input type="button" value="취소"></div>
+            </div>
+        </section>
+
+    </form>
+
+    <script src="../assets/js/post.js"></script>
+</body>
+</html>

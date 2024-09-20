@@ -1,0 +1,39 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<section id="bragSection">
+    <div class="post-container">
+        {% for i in bragPost %}
+            <div class="board-item" onclick="location.href='/board/detailPost?idx={{ i.BOARD_IDX }}'">
+                <div class="info-section">
+                    <span>
+                        <img src="{{i.BOARD_IMG}}" alt="">
+                    </span>
+                </div>
+                <h2 class="post-title">{{ i.BOARD_TITLE }}</h2>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- 하단 페이징 -->
+<div class="bragPaging">
+    {% if currentPage > 1 %}
+        <a href="?page={{ currentPage - 1 }}">이전</a>
+    {% endif %}
+    
+    {% for page in range(1, totalPages + 1) %}
+        {% if page == currentPage %}
+            <span>{{ page }}</span>
+        {% else %}
+            <a href="?page={{ page }}">{{ page }}</a>
+        {% endif %}
+    {% endfor %}
+    
+    {% if currentPage < totalPages %}
+        <a href="?page={{ currentPage + 1 }}">다음</a>
+    {% endif %}
+</div>
+
+{% endblock %}

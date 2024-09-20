@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <title>📕다이어리📕</title>
+    <meta charset='utf-8' />
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="../public/diary.css">
+    <link rel="stylesheet" href="../public/main.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header id="header">
+        <a href="/" class="logo"><img src="https://jsh-1.s3.ap-northeast-2.amazonaws.com/test/KakaoTalk_20240722_163631321_07.png" alt="무럭이">
+            <strong>MURUK </strong> <span>by ShinRok</span></a>
+        <ul class="icons">
+            {% if user %}
+            <li><a href="#">{{user.nick}}님 환영합니다.</a></li>
+            {% else %}
+            <li><a href="#">로그인 후 이용해주세요.</a></li>
+            {% endif %}
+            <li>
+                <form id="myPageForm" action="/myPage/info" method="post">
+                    <a href="#" onclick="document.getElementById('myPageForm').submit(); return false;">마이페이지</a>
+                </form>
+            </li>
+            {% if user %}
+            <div class="kakaoLogout">
+                <a href="/user/logout">로그아웃<img src=""></a>
+            </div>
+            {% else %}
+            <div class="kakaoLogin">
+                <a href="/user/login"><img src="https://jsh-1.s3.ap-northeast-2.amazonaws.com/test/kakao_login_small+(1).png"></a>
+            </div>
+            {% endif %}
+        </ul>
+    </header>
+    <form action="/diary/submit" method="post" enctype="multipart/form-data" class="diaryForm" id="diaryForm">    
+    <div id="container">
+        {% if user %}
+        <input type="hidden" name="idx" value="{{ user.idx }}">
+        {% endif %}
+        <aside class="leftSidebar">
+            <nav class="topsidebar">
+                <ul>
+                    <li><a href="/">HOME</a></li>
+                    <li><a href="/board/freeList">자유게시판</a></li>
+                    <li><a href="/board/bragPost">자랑하기</a></li>
+                    <li><a href="/board/hot">인기글</a></li>
+                    <li><a href="/board/queslist">질문게시판</a></li>
+                </ul>
+            </nav>
+            <nav class="underSidebar">
+                <ul>
+                    <li id="pointLi"><a href="/diary">Diary</a></li>
+                    <li><a href="/predict">병충해 진단</a></li>
+                    <li><a href="/dictionary/home">식물 도감</a></li>
+                    <li>
+                        <form id="myPageForm" action="/myPage/info" method="post">
+                            <a href="#" onclick="document.getElementById('myPageForm').submit(); return false;">마이페이지</a>
+                        </form>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+        <section class="calendarForm">
+            <div id='calendar'></div>
+            <div id="myModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <p id="modal-text"></p>
+                    <input type="hidden" name="modalText" id="modalText">
+                    <p><input type="text" placeholder="제목" name="title" id="title" size="100%"></p>
+                    <textarea name="content" id="content" placeholder="내용" style="resize: none;"></textarea>
+                    <div id="modal_bottom">
+                        <div id="stk">
+                            <div class="weather">날씨<br>
+                                <div class="radio-container">
+                                    <input type="radio" id="sun" name="weather" value="sun" class="radio-button">
+                                    <label for="sun"><img src="https://jsh-1.s3.ap-northeast-2.amazonaws.com/teast1/KakaoTalk_20240801_115342439.png" alt="해" class="sticker"></label>
+                                </div>
+                                <div class="radio-container">
+                                    <input type="radio" id="rain" name="weather" value="rain" class="radio-button">
+                                    <label for="rain"><img src="https://jsh-1.s3.ap-northeast-2.amazonaws.com/teast1/KakaoTalk_20240801_114622025_05.png" alt="비" class="sticker"></label>
+                                </div>
+                                <div class="radio-container">
+                                    <input type="radio" id="thunder" name="weather" value="thunder" class="radio-button">
+                                    <label for="thunder"><img src="https://jsh-1.s3.ap-northeast-2.amazonaws.com/teast1/KakaoTalk_20240801_114622025_03.png" alt="번개" class="sticker"></label>
+                                </div>
+                                <div class="radio-container">
+                                    <input type="radio" id="cloud" name="weather" value="cloud" class="radio-button">
+                                    <label for="cloud"><img src="https://jsh-1.s3.ap-northeast-2.amazonaws.com/teast1/KakaoTalk_20240801_114622025_02.png" alt="구름" class="sticker"></label>
+                                </div>
+                                <div class="radio-container">
+                                    <input type="radio" id="snow" name="weather" value="snow" class="radio-button">
+                                    <label for="snow"><img src="https://jsh-1.s3.ap-northeast-2.amazonaws.com/teast1/KakaoTalk_20240801_114622025_04.png" alt="눈" class="sticker"></label>
+                                </div>
+                            </div>
+                            <!-- <div id="do" class="custom-radio">행동 <br>
+                                <div class="radio-container">
+                                    <input type="radio" id="water" name="do" value="water" class="radio-button">
+                                    <label for="water"><img src="https://url.kr/x5zahb" alt="물주기" class="sticker"></label>
+                                </div>
+                                <div class="radio-container">
+                                    <input type="radio" id="seed" name="do" value="seed" class="radio-button">
+                                    <label for="seed"><img src="https://url.kr/ndtb2h" alt="심기" class="sticker"></label>
+                                </div>
+                                <div class="radio-container">
+                                    <input type="radio" id="cut" name="do" value="cut" class="radio-button">
+                                    <label for="cut"><img src="https://url.kr/p7w879" alt="가지치기" class="sticker"></label>
+                                </div>
+                                <div class="radio-container">
+                                    <input type="radio" id="repot" name="do" value="repot" class="radio-button">
+                                    <label for="repot"><img src="https://url.kr/iywgjg" alt="분갈이" class="sticker"></label>
+                                </div>
+                                <div class="radio-container">
+                                    <input type="radio" id="debug" name="do" value="debug" class="radio-button">
+                                    <label for="debug"><img src="https://url.kr/5wi911" alt="해충관리" class="sticker"></label>
+                                </div>
+                            </div>
+                            <div id="change" class="custom-radio">식물변화<br>
+                                <div class="radio-container">
+                                    <input type="radio" id="balah" name="change" value="balah" class="radio-button">
+                                    <label for="balah"><img src="https://url.kr/pvzbge" alt="발아" class="st커icker"></label>
+                                </div>
+                                <div class="radio-container">
+                                    <input type="radio" id="ssak" name="change" value="ssak" class="radio-button">
+                                    <label for="ssak"><img src="https://url.kr/h74t55" alt="싹" class="sticker"></label>
+                                </div>
+                                <div class="radio-container">
+                                    <input type="radio" id="ddukip" name="change" value="ddukip" class="radio-button">
+                                    <label for="ddukip"><img src="https://url.kr/mrtje5" alt="떡잎" class="sticker"></label>
+                                </div>
+                                <div class="radio-container">
+                                    <input type="radio" id="leaf" name="change" value="leaf" class="radio-button">
+                                    <label for="leaf"><img src="https://url.kr/itnj8f" alt="풀" class="sticker"></label>
+                                </div>
+                                <div class="radio-container">
+                                    <input type="radio" id="flower" name="change" value="flower" class="radio-button">
+                                    <label for="flower"><img src="https://url.kr/6m93r9" alt="꽃" class="sticker"></label>
+                                </div>
+                            </div> -->
+                        </div>
+                        <div id="upload">
+                            <input type="file" name="image" accept="image/*" onchange="loadFile(this)">
+                            <div class="addImage" id="image-show"></div>
+                        </div>
+                        <div id="commitButton">
+                            <input type="reset" value="취소" id="cancel">
+                            <input type="submit" value="등록" id="reg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="eventModal" class="modal">
+                <div class="modal-content">
+                    <span class="close event-close">&times;</span>
+                    <p id="event-modal-text"></p>
+                    <input type="hidden" name="modalText" id="eventModalText">
+                    <p><input type="text" placeholder="제목" name="title" id="eventTitle" size="100%" readonly></p>
+                    <textarea name="content" id="eventContent" placeholder="내용" readonly style="resize: none;"></textarea>
+                    <div id="pictureArea"></div>
+                    <div id="eventModalBottom"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            events: async function(info, successCallback, failureCallback){
+                const eventResult = await axios({
+                    method: "GET",
+                    url: "/diaryJson"
+                });
+    
+                console.log("조회된 다이어리 데이터:", eventResult.data);
+    
+                const eventData = eventResult.data.diarys;
+                const eventArray = [];
+    
+                eventData.forEach((res) => {
+                    eventArray.push({
+                        title: res.DIARY_TITLE,
+                        start: res.DIARY_DATE,
+                        description: res.DIARY_CONTENT,
+                        imageUrl: res.DIARY_IMG,
+                        allDay: true // 시간 표시 없이 하루 종일 이벤트로 표시
+                    });
+                });
+    
+                successCallback(eventArray);
+            },
+            dateClick: function(info) {
+                var modal = document.getElementById("myModal");
+                var span = document.getElementsByClassName("close")[0];
+                modal.style.display = "block";
+                document.getElementById("modalText").value = info.dateStr;
+                document.getElementById("modal-text").innerText = info.dateStr;
+                document.getElementById("title").value = "";
+                document.getElementById("content").value = "";
+                span.onclick = function() {
+                    modal.style.display = "none";
+                }
+                window.onclick = function(event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
+            },
+            eventClick: function(info) {
+                var modal = document.getElementById("eventModal");
+                var span = document.getElementsByClassName("event-close")[0];
+                modal.style.display = "block";
+                document.getElementById("eventModalText").value = info.event.startStr;
+                document.getElementById("eventTitle").value = info.event.title;
+                document.getElementById("eventContent").value = info.event.extendedProps.description;
+                var pictureArea = document.getElementById("pictureArea");
+                pictureArea.innerHTML = "";
+                if (info.event.extendedProps.imageUrl) {
+                    var img = document.createElement("img");
+                    img.src = info.event.extendedProps.imageUrl;
+                    img.alt = "Event Image";
+                    img.style.width = "100%";
+                    pictureArea.appendChild(img);
+                }
+                span.onclick = function() {
+                    modal.style.display = "none";
+                }
+                window.onclick = function(event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
+            },
+            displayEventTime: false, // 이벤트 시간 표시 비활성화
+            eventDisplay: 'block' // 이벤트가 블록으로 표시되도록 설정
+        });
+        calendar.render();
+    
+        document.getElementById('diaryForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+    
+            axios.post('/diary/submit', formData)
+                .then(response => {
+                    console.log('Form submission successful:', response);
+                    window.location.reload();
+                })
+                .catch(error => {
+                    console.error('Form submission error:', error);
+                });
+        });
+    });
+</script>
+<script src="../assets/js/diary.js"></script>
+</body>
+</html>

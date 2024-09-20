@@ -1,0 +1,384 @@
+@import url('http://fonts.googleapis.com/earlyaccess/nanumgothic.css');
+
+@font-face {
+  font-family: 'GmarketSansMedium';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+*{
+    font-family: 'Pretendard-Regular';
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* ------- 상단 배너 이미지 크기 조절 ---------- */
+#banner header{
+    text-align: center;
+}
+#banner .murukLogo{
+    width: 75vw;
+    margin-bottom: 1vw;
+    margin-left: 12%;
+}
+
+
+/* ------------ 왼쪽 사이드바 ----------------------------- */
+.leftSidebar{
+    width: 13%;
+    background-color: #f5f6f7;
+    padding-top: 20px;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+}
+.leftSidebar nav ul{
+    list-style-type: none;
+    padding-left: 0;
+    text-align: center;
+}
+.leftSidebar nav ul li{
+    margin: 20px 0;
+}
+.leftSidebar nav ul li a{
+    color: #34495e;
+    text-decoration: none;
+    display: block;
+    /* padding: 10px 0; */
+    padding: 5%;
+    font-family: 'GmarketSansMedium';
+
+}
+.leftSidebar nav ul li a:hover{
+    background-color: #f67878;
+    color: #f5f6f7;
+}
+
+#pointLi a{
+    background-color: #f67878;
+    color: #f5f6f7;
+}
+
+.underSidebar a{
+    font-size: smaller;
+    margin-top: 5%;
+}
+.underSidebar li{
+    border-top: solid 2px #afa8a8;
+}
+
+.topsidebar ul{
+    margin-bottom: 15%;
+    margin-top: 10%;
+}
+
+#myPageForm{
+    width: 100%;
+}
+
+#myPageForm a{
+    width: 100%;
+}
+
+  /* Header */
+  #header {
+    display: -moz-flex;
+    display: -webkit-flex;
+    display: -ms-flex;
+    display: flex;
+    border-bottom: solid 5px #f56a6a;
+    padding: 2.1vw 0 1em 0;
+    width: 76%;
+    margin-left: 18%;
+    position: relative; }
+    #header > * {
+      -moz-flex: 1;
+      -webkit-flex: 1;
+      -ms-flex: 1;
+      flex: 1;
+      margin-bottom: 0; }
+    #header .logo {
+      display: flex;
+      align-items: center;
+      border-bottom: 0;
+      color: inherit;
+      text-decoration: none;
+      font-weight: 400;
+      line-height: 2vh;
+      font-family: 'GmarketSansMedium';
+      font-size: 1.125em; }
+
+    #header .logo strong:hover{
+        color: #f67878;
+    }
+
+    #header .icons {
+      text-align: right; }
+    
+    #header ul.icons a{
+      font-family: 'GmarketSansMedium';
+      color: #f56a6a;
+      text-decoration: none;
+      width: 6vw;
+    }
+    #header .logo strong{
+      font-size: 1em;
+      margin-left: 1%;
+    }
+    #header .logo span{
+      font-family: 'GmarketSansMedium';
+      font-size: 0.8em;
+      padding-left: 0.5vw;
+      padding-top: 1vh;
+    }
+    #header .logo span:hover{
+        color: #f67878;
+    }
+  
+    @media screen and (max-width: 1680px) {
+      #header {
+        padding-top: 2.1vw; } }
+    @media screen and (max-width: 736px) {
+      #header {
+        padding-top: 6.5em; }
+        #header .logo {
+          font-size: 1.25em;
+          margin: 0; }
+        #header .icons {
+          height: 5em;
+          line-height: 5em;
+          position: absolute;
+          right: -0.5em;
+          top: 0; } 
+    }
+
+/* Icons */
+ul.icons {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    cursor: default;
+    font-size: 0.9em;
+    list-style: none; }
+    ul.icons li {
+      display: inline-block;
+      padding: 0 1em 0 0; }
+      ul.icons li:last-child {
+        padding-right: 0; }
+      ul.icons li .icon {
+        color: inherit; }
+        ul.icons li .icon:before {
+          font-size: 1.25em; }
+
+
+/* ------------ 바디 ----------------------------- */
+
+body {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center;
+    align-items: center; */
+    height: 150vh;
+    margin: 0;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1vw; /* gap을 줄임 */
+    justify-content: center;
+    width: 80%;
+    align-items: center;
+    text-align: center;
+    margin-left: 25%;
+    margin-bottom: 3%;
+}
+
+.predictFooter{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 25%;
+}
+
+.custom-radio {
+    flex-basis: calc(100% / 6 - 1vw); /* 6개씩 배치, gap 고려 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.custom-radio input[type="radio"] {
+    display: none;
+}
+
+.custom-radio input[type="radio"] + label {
+    display: inline-block;
+    cursor: pointer;
+    height: 2vw; /* 높이를 줄임 */
+    width: 10vw; /* 너비를 줄임 */
+    border: 0.1vw solid #f56a6a; /* 테두리를 줄임 */
+    line-height: 2vw; /* line-height를 줄임 */
+    text-align: center;
+    font-weight: bold;
+    font-size: 1vw; /* 글꼴 크기를 줄임 */
+    background-color: #fff;
+    color: #f56a6a;
+}
+
+.custom-radio input[type="radio"] + label:hover {
+    background-color: #f8dada;
+}
+
+.custom-radio input[type="radio"]:checked + label {
+    background-color: #f56a6a;
+    color: #fff;
+}
+
+.image-preview {
+    width: 30vw; /* 너비를 줄임 */
+    height: 20vw; /* 높이를 줄임 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2vw;
+    margin-left: 20%;
+}
+
+.image-preview img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.button {
+    display: flex;
+    gap: 1vw; /* gap을 줄임 */
+}
+
+.button button {
+    padding: 0.5vw 1vw; /* padding을 줄임 */
+    font-size: 1vw; /* 글꼴 크기를 줄임 */
+    border-radius: 15px;
+    color: #f56a6a;
+    background-color: #fff;
+    border: 0.1vw solid #f56a6a;
+}
+
+.button button:hover {
+    background-color: #f56a6a;
+    color: #fff;
+}
+
+.file-upload-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 5%;
+}
+
+.file-upload-wrapper input[type="file"] {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.file-upload-wrapper label.custom-file-upload {
+    background-color: #f56a6a;
+    color: white;
+    border: 0.1vw solid #f56a6a;
+    padding: 0.5vw 1vw;
+    cursor: pointer;
+    margin-right: 1vw;
+}
+
+#fileName{
+    color : #f56a6a
+}
+
+.file-upload-wrapper span {
+    font-size: 1vw;
+}
+
+/* Media Queries for responsiveness */
+@media (max-width: 768px) {
+    .custom-radio {
+        flex-basis: calc(100% / 3 - 1vw); /* 3개씩 배치, gap 고려 */
+    }
+
+    .custom-radio input[type="radio"] + label {
+        height: 3vw; /* 높이를 조정 */
+        width: 20vw; /* 너비를 조정 */
+        line-height: 3vw; /* line-height를 조정 */
+        font-size: 1.5vw; /* 글꼴 크기를 조정 */
+    }
+
+    .image-preview {
+        width: 50vw; /* 너비를 조정 */
+        height: 50vw; /* 높이를 조정 */
+    }
+
+    .button button {
+        padding: 1.5vw 2.5vw; /* padding을 조정 */
+        font-size: 1.5vw; /* 글꼴 크기를 조정 */
+    }
+
+    .file-upload-wrapper label.custom-file-upload {
+        padding: 1vw 2vw; /* padding을 조정 */
+    }
+
+    .file-upload-wrapper span {
+        font-size: 1.5vw; /* 글꼴 크기를 조정 */
+    }
+}
+
+@media (max-width: 480px) {
+    .custom-radio {
+        flex-basis: calc(100% / 2 - 1vw); /* 2개씩 배치, gap 고려 */
+    }
+
+    .custom-radio input[type="radio"] + label {
+        height: 4vw; /* 높이를 조정 */
+        width: 30vw; /* 너비를 조정 */
+        line-height: 4vw; /* line-height를 조정 */
+        font-size: 2vw; /* 글꼴 크기를 조정 */
+    }
+
+    .image-preview {
+        width: 60vw; /* 너비를 조정 */
+        height: 60vw; /* 높이를 조정 */
+    }
+
+    .button button {
+        padding: 2vw 3vw; /* padding을 조정 */
+        font-size: 2vw; /* 글꼴 크기를 조정 */
+    }
+
+    .file-upload-wrapper label.custom-file-upload {
+        padding: 1.5vw 3vw; /* padding을 조정 */
+    }
+
+    .file-upload-wrapper span {
+        font-size: 2vw; /* 글꼴 크기를 조정 */
+    }
+}
+
+

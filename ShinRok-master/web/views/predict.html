@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../public/predict.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header id="header">
+        <a href="/" class="logo"><img src="https://jsh-1.s3.ap-northeast-2.amazonaws.com/test/KakaoTalk_20240722_163631321_07.png" alt="무럭이">
+            <strong>MURUK </strong> <span>by ShinRok</span></a>
+        <ul class="icons">
+            {% if user %}
+            <li><a href="#">{{user.nick}}님 환영합니다.</a></li>
+            {% else %}
+            <li><a href="#">로그인 후 이용해주세요.</a></li>
+            {% endif %}
+            <li>
+                <form id="myPageForm" action="/myPage/info" method="post">
+                    <a href="#" onclick="document.getElementById('myPageForm').submit(); return false;">마이페이지</a>
+                </form>
+                <!-- <li><a href="/myPage/info" id="myPageLink">마이페이지</a></li> --> 
+            </li>
+            {% if user %}
+            <div class="kakaoLogout">
+                <a href="/user/logout">로그아웃<img src=""></a>
+            </div>
+            {% else %}
+            <div class="kakaoLogin">
+                <a href="/user/login"><img src="https://jsh-1.s3.ap-northeast-2.amazonaws.com/test/kakao_login_small+(1).png"></a>
+            </div>
+            {% endif %}
+        </ul>
+    </header>
+
+    <!-- ------------------- 최상단 배너 ----------------------- -->
+    <section id="banner">
+        <div class="content">
+            <header>
+                <!-- <h2>오늘의 식물 <br/></h2> -->
+                <img class="murukLogo" src="https://jsh-1.s3.ap-northeast-2.amazonaws.com/board/3b75af8023791787f968e466c9c757e2" alt="">
+            </header>
+            <!-- <ul class="actions">
+                <li><a href="#">자세히 보러가기 <i class="fa-solid fa-right-long"></i></a></li>
+            </ul> -->
+        </div>
+    </section>
+        
+  
+    <!-- 왼쪽 사이드바 -->
+    <aside class="leftSidebar">
+        <nav class="topsidebar">
+            <ul>
+                <li><a href="/">HOME</a></li>
+                <li><a href="/freeList">자유게시판</a></li>
+                <li><a href="/board/bragList">자랑하기</a></li>
+                <li><a href="/board/hot">인기글</a></li>
+                <li><a href="/board/queslist">질문게시판</a></li>
+            </ul>
+        </nav>
+        <!-- 아래쪽 사이드바(페이지 이동) -->
+        <nav class="underSidebar">
+            <ul>
+                <li><a href="/diary">Diary</a></li>
+                <li id="pointLi"><a href="/predict">병충해 진단</a></li>
+                <li><a href="/dictionary/home">식물 도감</a></li>
+                <li>
+                    <form id="myPageForm" action="/myPage/info" method="post">
+                        <a href="#" onclick="document.getElementById('myPageForm').submit(); return false;">마이페이지</a>
+                    </form>
+                    <!-- <a href="/myPage/info">마이페이지</a> -->
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- -------------------------- 진단페이지 ------------------------------------------ -->
+    <form id="predictForm" action="/predict/start" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="idx" value="{{user.idx}}">
+        
+        <!-- 진단 사진이 보이는 곳 -->
+        <div class="image-preview" id="imagePreview"> </div>
+
+        <div class="container">
+            <div class="custom-radio">
+                <input type="radio" id="가지" name="plant" value="가지">
+                <label for="가지">가지</label>
+            </div>
+            <div class="custom-radio">
+                <input type="radio" id="고추" name="plant" value="고추">
+                <label for="고추">고추</label>
+            </div>
+            <div class="custom-radio">
+                <input type="radio" id="단호박" name="plant" value="단호박">
+                <label for="단호박">단호박</label>
+            </div>
+            <div class="custom-radio">
+                <input type="radio" id="딸기" name="plant" value="딸기">
+                <label for="딸기">딸기</label>
+            </div>
+            <div class="custom-radio">
+                <input type="radio" id="상추" name="plant" value="상추">
+                <label for="상추">상추</label>
+            </div>
+            <div class="custom-radio">
+                <input type="radio" id="수박" name="plant" value="수박">
+                <label for="수박">수박</label>
+            </div>
+            <div class="custom-radio">
+                <input type="radio" id="애호박" name="plant" value="애호박">
+                <label for="애호박">애호박</label>
+            </div>
+            <div class="custom-radio">
+                <input type="radio" id="오이" name="plant" value="오이">
+                <label for="오이">오이</label>
+            </div>
+            <div class="custom-radio">
+                <input type="radio" id="주키니호박" name="plant" value="주키니호박">
+                <label for="주키니호박">주키니호박</label>
+            </div>
+            <div class="custom-radio">
+                <input type="radio" id="참외" name="plant" value="참외">
+                <label for="참외">참외</label>
+            </div>
+            <div class="custom-radio">
+                <input type="radio" id="토마토" name="plant" value="토마토">
+                <label for="토마토">토마토</label>
+            </div>
+            <div class="custom-radio">
+                <input type="radio" id="포도" name="plant" value="포도">
+                <label for="포도">포도</label>
+            </div>
+        </div>
+
+        <div class="predictFooter">
+            <div class="file-upload-wrapper">
+                <input type="file" name="image" id="imageUpload" accept="image/*">
+                <label for="imageUpload" class="custom-file-upload">파일 선택</label>
+                <span id="fileName">선택된 파일 없음</span>
+            </div>
+
+            <div class="button">
+                <button type="button" class="cancel-button" onclick="window.location.href='/'">취소</button>
+                <button type="submit">전송</button>
+            </div>
+        </div>
+    </form>
+
+
+
+    <script>
+        const imageUpload = document.getElementById('imageUpload')
+        const imagePreview = document.getElementById('imagePreview')
+        const fileNameSpan = document.getElementById('fileName')
+        const cancelButton = document.querySelector('.cancel-button')
+
+        imageUpload.addEventListener('change', function() {
+            const file = this.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.addEventListener('load', function() {
+                    imagePreview.innerHTML = '<img src="' + this.result + '" />';
+                });
+
+                reader.readAsDataURL(file);
+
+                // 파일 이름 표시
+                fileNameSpan.textContent = file.name;
+            } else {
+                fileNameSpan.textContent = '선택된 파일 없음';
+            }
+        });
+
+        cancelButton.addEventListener('click', function() {
+            imageUpload.value = '';
+            imagePreview.innerHTML = '';
+            fileNameSpan.textContent = '선택된 파일 없음';
+        });
+    </script>
+</body>
+
+</html>

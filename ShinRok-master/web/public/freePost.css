@@ -1,0 +1,67 @@
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* -------------------------------------------------------------------------------------------------------------------------------- */
+
+#freeSection{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.freetable{
+    width: 100%;
+    border-collapse: collapse;
+    border-top: 1px solid #3D4449;
+    margin-bottom: 3%;
+}
+
+.freetable *{
+    font-family: 'Pretendard-Regular';
+    text-align: center;
+    height: 5.5vh;
+}
+
+/*  테이블 헤더  */
+.freetable th{
+    color:#3D4449;
+    /* border: 1px solid #3D4449 */
+}
+
+/*  테이블 행 테두리 */
+.freetable tr{
+    border-bottom: 1px solid #3D4449;
+}
+
+.freetable .postHead{
+    background-color: #ffa6a6;
+}
+
+.freetable th{
+    color: #0c0d0e;
+}
+
+/* 게시물 클릭 시 이벤트 속성 */
+.freetable .contentBody:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
+
+/* 하단 페이징 */
+.freePaging {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-right: 5%;
+    margin-bottom: 3%;
+}
+
+.freePaging a, span{
+    margin-left: 1%;
+    font-size: 15px;
+    /* color: #3D4449; */
+}

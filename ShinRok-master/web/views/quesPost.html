@@ -1,0 +1,59 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<section id="quesSection">
+    <table class="questable">
+
+        <tr class="postHead">
+            <th>번호</th>
+            <th>구분</th>
+            <th class="postTitle">제목</th>
+            <th>작성자</th>
+            <th>작성날짜</th>
+            <th>조회</th>
+            <th>추천</th>
+            <th></th>
+
+        </tr>
+
+
+        {% for i in quesPost %}
+
+            <tr class="contentBody" onclick="location.href='/board/question?idx={{ i.BOARD_IDX }}'">
+                <td>{{ loop.index }}</td>
+                <td>{{i.BOARD_CATE}}</td>
+                <td class="content">{{ i.BOARD_TITLE }}</td>
+                <td>{{ i.USER_NICK }}</td>
+                <td>{{ i.BOARD_DATE | date("YYYY-MM-DD HH:mm") }}</td>
+                <td>{{ i.BOARD_COUNT }}</td>
+                <td>{{ i.BOARD_RECOMMEND }}</td> 
+                <td>
+                    <input type="hidden" value="{{ i.BOARD_IDX }}">
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</section>
+
+    <!-- 하단 페이징 -->
+    <div class="quesPaging">
+        {% if currentPage > 1 %}
+            <a href="?page={{ currentPage - 1 }}">이전</a>
+        {% endif %}
+        
+        {% for page in range(1, totalPages + 1) %}
+            {% if page == currentPage %}
+                <span>{{ page }}</span>
+            {% else %}
+                <a href="?page={{ page }}">{{ page }}</a>
+            {% endif %}
+        {% endfor %}
+        
+        {% if currentPage < totalPages %}
+            <a href="?page={{ currentPage + 1 }}">다음</a>
+        {% endif %}
+    </div>
+</section>
+
+{% endblock%}

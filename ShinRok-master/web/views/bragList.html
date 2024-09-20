@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>자랑게시판 목록페이지</title> 
+    <script src="https://kit.fontawesome.com/71a327e855.js" crossorigin="anonymous"></script>
+    <!-- font awesome 오류 났을때 fas / fab (brand 이미지일 경우) 앞에 추가하여 해결 _버전 오류 -->
+
+    <link rel="stylesheet" href="../public/bragList.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header id="header">
+        <a href="/" class="logo"><img src="https://jsh-1.s3.ap-northeast-2.amazonaws.com/test/KakaoTalk_20240722_163631321_07.png" alt="무럭이">
+            <strong>MURUK </strong> <span>by ShinRok</span></a>
+        <ul class="icons">
+            {% if user %}
+            <li><a href="#">{{user.nick}}님 환영합니다.</a></li>
+            {% else %}
+            <li><a href="#">로그인 후 이용해주세요.</a></li>
+            {% endif %}
+            <li>
+                <form id="myPageForm" action="/myPage/info" method="post">
+                    <a href="#" onclick="document.getElementById('myPageForm').submit(); return false;">마이페이지</a>
+                </form>
+                <!-- <li><a href="/myPage/info" id="myPageLink">마이페이지</a></li> --> 
+            </li>
+            {% if user %}
+            <div class="kakaoLogout">
+                <a href="/user/logout">로그아웃<img src=""></a>
+            </div>
+            {% else %}
+            <div class="kakaoLogin">
+                <a href="/user/login"><img src="https://jsh-1.s3.ap-northeast-2.amazonaws.com/test/kakao_login_small+(1).png"></a>
+            </div>
+            {% endif %}
+        </ul>
+    </header>
+
+    <!-- ------------------- 최상단 배너 ----------------------- -->
+    <section id="banner">
+        <div class="content">
+            <header>
+                <!-- <h2>오늘의 식물 <br/></h2> -->
+                <img class="murukLogo" src="https://jsh-1.s3.ap-northeast-2.amazonaws.com/board/63f25f8a5b4f5ebf2c08e948eaa4ded2" alt="">
+            </header>
+            <!-- <ul class="actions">
+                <li><a href="#">자세히 보러가기 <i class="fa-solid fa-right-long"></i></a></li>
+            </ul> -->
+        </div>
+    </section>
+        
+  
+    <!-- 왼쪽 사이드바 -->
+    <aside class="leftSidebar">
+        <nav class="topsidebar">
+            <ul>
+                <li><a href="/">HOME</a></li>
+                <li><a href="/board/freeList">자유게시판</a></li>
+                <li id="pointLi"><a href="/board/bragList">자랑하기</a></li>
+                <li><a href="/board/hot">인기글</a></li>
+                <li><a href="/board/queslist">질문게시판</a></li>
+            </ul>
+        </nav>
+        <!-- 아래쪽 사이드바(페이지 이동) -->
+        <nav class="underSidebar">
+            <ul>
+                <li><a href="/diary">Diary</a></li>
+                <li><a href="/predict">병충해 진단</a></li>
+                <li><a href="/dictionary/home">식물 도감</a></li>
+                <li>
+                    <form id="myPageForm" action="/myPage/info" method="post">
+                        <a href="#" onclick="document.getElementById('myPageForm').submit(); return false;">마이페이지</a>
+                    </form>
+                    <!-- <a href="/myPage/info">마이페이지</a> -->
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    </div>
+        <!-- ---------------------------- 여기부터 자랑페이지 ----------------------------------------- -->
+        <!-- <div class="board" id="board"></div> -->
+
+        <div class="post-container">
+             <!-- 각 게시물 블록을 반복해서 사용 -->
+            {% for i in bragList %}
+            
+                <div class="board-item" onclick="location.href='/board/detailPost?idx={{ i.BOARD_IDX }}'">
+                    <input type="hidden" name="idx" value="{{bragList.idx}}">
+                    
+                    <div class="table">
+                        <div class="imgList">
+                            {% if i.BOARD_IMG %}
+                            <div class="addImage">
+                                <img src="{{i.BOARD_IMG}}" alt="자랑 이미지">
+                            </div>
+                            {% else %}
+                            <div class="addImage">
+                                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARwAAACxCAMAAAAh3/JWAAAAgVBMVEXv7+/19fXz8/P39/fu7u4vLy8nJycsLCzg4ODp6el7e3uZmZlERERKSkrj4+OoqKg0NDSBgYFYWFhOTk4iIiI7OzuJiYm6urrY2NjPz885OTmioqI/Pz////+Hh4fR0dFtbW2bm5saGhrFxcVUVFRkZGSzs7NwcHALCwu/v7+RkZEoMv5yAAAEs0lEQVR4nO3Zi26jOBQGYGxjDAkEQriHhpDrhPd/wD2GcEu6alfaaor0fxo1KTio/mMOtscwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOAXMs3hLRfs7bTjvB1inzTrL/Z64LNLLgrn3Svzr2vRHqBDvDvqBH/sts+TCG9hI4bf2IRgfHZd+pceu0vSuYmf7tH/hpnntGqTYGu51T2xsycKxHEtCsfgbd+F7qHB92o1hGPH3kSg25q2zbsX+pxv3aktt72Z99H4O7GzZyl13VB/xDrQ4YijZUVRZKk/dLALhzWX8GmXsb0cwuF2udPK0tMvsQ7HjmI9NGxLmTQYu7a2Pnvpm+0WEg6vpFzVYXAxx3BWwaqu63WpNv3IYYlL3zd1jX5kYhKOwT+0fRAn7Rt9J9mqZPpFSpNGTte2a5YUxbFvtgQiDGq6Wa6SSsMQjnoIzkQ8hkN1VYiHun4IRmem4bTXqGKvLM7PY89wDFsGYziEGWt5OcqDsZiKwzPlGe342fFJOKkeAcUkHN0mVdeuto7hmG01SkuV+qq4dYVWhyOonM/C4cz2L6qszIu6+DZbxsjhN7UV+mHuFRl/CSd+Cecmr1w/s2Yjx8n8UClfsLVSoZ85bThuXuXVIwiMPhzWuMqSiUN1v5GRcveLSIceULX+vkUo8y/CEevCbQvpNBzWnCx5z/Sn8qO0TjUz9ciJdEF3x5HD8zC5OXo8ceHcDmG2jHAaudfhfITy/NXIuZbUxpiHwzfbmy3arnKW+VuHt7eVT+piDMfZOI6zeXK0v9Lb/4jVsp2kiUvwxcjhWeDGes4yC8fk44yufW92NYcmRZOaI66nqB1MSlntm9O8ov9SVGWP+u904mLzWpDn4eijF/lgs3BE2PU6srpOR6ej+ORpxfxEaxI3XjVa4i/ivnJkTPNZQcV2+ihPaR7MZuGIVHr8oWKbzcJpVp2yvHdvaqYL8nOeMxTkfoLtKbtbRiwiG4Md5NERlSspjyEcuc+qqpqGI/KAWrBt4OaCTwuyEB/UaVHKTLS6gkyvYjOf59DD/Oy7RX3eLCQZzdnJ2AvkgY0z5Hug9C1SRM9waBGxD2SiO3mXqpnPkM9+TkW4lBXv16e2VbYLqHIyQzZYdZWnk2WdTvK4jGeVxs3Gc0Nf0BTmGQ6/7Tu1048cx7OStvCKdVzN5jniEDV0D6pTPvTY3vXLsCEck1cqWD2yzSZL70FsLyUdysTUk7NxbUV3gF5+051h9OHw6sa6XQvmzJcPIpFrOpWmm/GSk52JfuSIQ3D40Et/mugcpb+YFcSoD2dq2LIYD72GU3+Ip/eNmiGcJFjRaZoEMnFdZjj1v4Yz9RJOcE0G3SbYZDvwuWVhGnahwv0jzx/7i1zMds6UaKK3yVm3EzjD99F9DGdrSaulaIbnvX6c7U9dW25v3W5G5NES6wf++B+X5W8PEjM/v+0LZ+lYfY1hVdB6bcpz/9HeQzR9drJzmp4zZwmT4+/65Gvm3//qed/WNMaNafic+f4fFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8C3/AFJnTQ/OGedyAAAAAElFTkSuQmCC" alt="자랑 이미지">
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <h2 class="post-title">{{i.BOARD_TITLE}}</h2>
+                    <p>{{i.BOARD_CONTENT}}</p>
+                    <div class="info-section">
+                        <div class="nick"><span>{{ i.USER_NICK }}</span></div>
+                        <span><i class="fa-regular fa-comment-dots"></i> {{i.COMMENT_COUNT}}</span>
+                        <span><i class="fa-solid fa-eye"></i> {{i.BOARD_COUNT}}</span>
+                        <span>{{ i.BOARD_DATE | date("MM-DD HH:mm") }}</span>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    
+        <!-- <div class="pagination" id="pagination"></div>  -->
+        <!-- 페이지네이션 -->
+        
+        <!-- 하단 페이징 -->
+        <div class="bragPaging">
+            {% if currentPage > 1 %}
+                <a href="?page={{ currentPage - 1 }}">이전</a>
+            {% endif %}
+            
+            {% for page in range(1, totalPages + 1) %}
+                {% if page == currentPage %}
+                    <span>{{ page }}</span>
+                {% else %}
+                    <a href="?page={{ page }}">{{ page }}</a>
+                {% endif %}
+            {% endfor %}
+            
+            {% if currentPage < totalPages %}
+                <a href="?page={{ currentPage + 1 }}">다음</a>
+            {% endif %}
+        </div>
+
+
+    </form>
+
+    <script src="../assets/js/post.js"></script>
+    <script src="../assets/js/bragList.js"></script>
+</body>
+</html>

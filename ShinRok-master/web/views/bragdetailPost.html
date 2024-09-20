@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ bragList.BOARD_TITLE }}</title> 
+    <script src="https://kit.fontawesome.com/71a327e855.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../public/bragdetailPost.css">
+</head>
+
+<body>
+    <!-- 최상단 배너 -->
+    <section id="banner">
+        <div class="content">
+            <header>
+                <img class="murukLogo" src="https://jsh-1.s3.ap-northeast-2.amazonaws.com/board/63f25f8a5b4f5ebf2c08e948eaa4ded2" alt="">
+            </header>
+        </div>
+    </section>
+  
+    <!-- 왼쪽 사이드바 -->
+    <aside class="leftSidebar">
+        <nav class="topsidebar">
+            <ul>
+                <li><a href="/">HOME</a></li>
+                <li><a href="/board/freeList">자유게시판</a></li>
+                <li id="pointLi"><a href="/board/bragPost">자랑하기</a></li>
+                <li><a href="/board/hot">인기글</a></li>
+                <li><a href="/board/queslist">질문게시판</a></li>
+            </ul>
+        </nav>
+        <!-- 아래쪽 사이드바(페이지 이동) -->
+        <nav class="underSidebar">
+            <ul>
+                <li><a href="/diary">Diary</a></li>
+                <li><a href="/predict">병충해 진단</a></li>
+                <li><a href="/dictionary/home">식물 도감</a></li>
+                <li>
+                    <form id="myPageForm" action="/myPage/info" method="post">
+                        <a href="#" onclick="document.getElementById('myPageForm').submit(); return false;">마이페이지</a>
+                    </form>
+                    <!-- <a href="/myPage/info">마이페이지</a> -->
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Body 전체 -->
+    <form action="/board/bragdetailPost" id="bragDetailForm" class="bragdetailForm" method="POST">
+        <!-- 게시글 상세페이지 -->
+        <table class="table"> 
+            {% if user %}
+            <input type="hidden" name="user_idx" value="{{user.idx}}">
+            {% endif %}
+            
+            <!-- 게시물 제목부분 -->
+            <tr>
+                <td colspan="4"><h4 id="category">카테고리>  </h4></td>
+            </tr>
+
+            <!-- 타이틀 제목 -->
+            <tr>
+                <td colspan="4"><h2 id="titleName">{{ bragdetailPost.BOARD_TITLE }}</h2></td>
+            </tr>
+                
+            <tr id="spaceTitle">
+
+                <td rowspan="2" id="profilePic"><img src = '{{bragdetailPost.USER_PICTURE}}'></td>
+                <td id="userNick"> {{ bragdetailPost.USER_NICK }}</td>
+                <tr class="titleList">
+                    <td id="titleDate">{{ bragdetailPost.BOARD_DATE |  date("MM/DD HH:mm", "Asia/Seoul") }}
+                        <input type="hidden" name="board_idx" value="{{bragdetailPost.BOARD_IDX}}">
+                    </td>
+                    <td id="titleTd">조회수<span>: {{ bragdetailPost.BOARD_COUNT }}</span></td>
+                    <td id="titleTd" colspan="2"><i class="fa-regular fa-comment-dots"></i>댓글 수<span>: {{ commentCount }}</span></td>
+                </tr>
+            </tr>
+
+                <!-- 가로선 추가 -->
+                <tr>
+                    <td colspan="4"><div class="horizontal-line"></div></td>
+                </tr>
+            <!-- ------------------- 게시물 내용이 보이는 부분 ----------------- -->
+                <tr>
+                    <td class="addImage" colspan="5">
+                        <!-- 이미지 혹은 내용을 넣을 공간 -->
+                        {% if bragdetailPost.BOARD_IMG %}
+                            <img src="{{ bragdetailPost.BOARD_IMG }}" alt="게시글 이미지" id="postImg">
+                        {% endif %}
+                        <br> <br>
+                        <span>{{ bragdetailPost.BOARD_CONTENT }}</span>
+
+            <!-- 가로선 추가 -->
+            <tr>
+                <td colspan="4"><div class="horizontal-line"></div></td>
+            </tr>
+
+
+            <!-- 게시물 내용이 보이는 부분 -->
+
+            
+            <!-- 게시글 작성한 유저가 접속시 수정하기 버튼 생성 -->
+            <tr>
+                <div class="align-buttons">
+
+                <td id="commendBtn"><i class="fa-regular fa-comment-dots"></i>
+                    <a href="#">댓글 <span id="commentCount">{{ commentCount }}</span></a></td>
+                    <td id="chochun" colspan="3"><i class="fa-regular fa-star"></i>
+                        <button type="button">추천하기</button></td>
+
+                    <td id="changeBtn"><a href="/changePost" class="change_post"><button type="button">수정하기</button></a></td>
+                </div>
+            </tr>
+            
+            <!-- 댓글 목록 & 작성하기 부분 -->
+            <tr>
+                <td colspan="5">
+                    <div class="comment-section">
+                        <!-- 댓글 작성 -->
+                        <h4><i class="fa-solid fa-plus"></i>댓글쓰기</h4>
+                        <div id="plusCommend">
+                            <textarea placeholder="내용을 입력하세요" name="content"></textarea>
+                            <button type="submit">등록하기</button>
+                        </div>
+                        <div id="commentTitle">
+                            <h3>전체 댓글</h3> 
+                        </div>
+                        
+                        <!-- 댓글 목록 -->
+                        <div id="commentList"></div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        document.getElementById('bragDetailForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const data = {
+                user_idx: formData.get('user_idx'),
+                board_idx: formData.get('board_idx'),
+                content: formData.get('content')
+            };
+
+            axios.post('http://localhost:3000/board/cmnt', data)
+                .then(response => {
+                    if (response.data.success) {
+                        // 댓글 목록 업데이트
+                        loadComments(data.board_idx);
+                        // 댓글 수 업데이트
+                        document.getElementById('commentCount').innerText = response.data.commentCount;
+                    } else {
+                        alert('댓글 등록에 실패했습니다.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+
+        function loadComments(boardIdx) {
+            axios.get(`http://localhost:3000/board/comments?board_idx=${boardIdx}`)
+                .then(response => {
+                    const commentList = document.getElementById('commentList');
+                    commentList.innerHTML = '';
+
+                    response.data.comments.forEach(comment => {
+                        const commentDiv = document.createElement('div');
+                        commentDiv.classList.add('comment');
+
+                        const icon = document.createElement('i');
+                        icon.classList.add('fa-regular', 'fa-comment-dots');
+
+                        const authorDiv = document.createElement('div');
+                        const authorSpan = document.createElement('span');
+                        authorSpan.classList.add('author');
+                        authorSpan.textContent = comment.USER_NICK;
+
+                        const timestampSpan = document.createElement('span');
+                        timestampSpan.classList.add('timestamp');
+                        timestampSpan.textContent = new Date(comment.CMNT_DATE).toLocaleString();
+
+                        authorDiv.appendChild(authorSpan);
+                        authorDiv.appendChild(timestampSpan);
+
+                        const contentDiv = document.createElement('div');
+                        contentDiv.classList.add('content');
+                        contentDiv.textContent = comment.CMNT_CONTENT;
+
+                        commentDiv.appendChild(icon);
+                        commentDiv.appendChild(authorDiv);
+                        commentDiv.appendChild(contentDiv);
+
+                        commentList.appendChild(commentDiv);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        // 페이지 로드 시 댓글 목록 로드
+        const boardIdx = "{{ bragdetailPost.BOARD_IDX }}"; // 템플릿 변수 사용
+        loadComments(boardIdx); // 해당 게시글 ID로 호출
+    </script>
+</body>
+
+</html>

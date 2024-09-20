@@ -1,0 +1,112 @@
+@import url('http://fonts.googleapis.com/earlyaccess/nanumgothic.css');
+
+@font-face {
+  font-family: 'GmarketSansMedium';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+*{
+    font-family: 'Pretendard-Regular';
+}
+
+/* ------------------------------------------------------------ */
+
+body {
+    background-color: #ffe7e7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 95vh;
+    margin: 0;
+    /* background-image: url("https://jsh-1.s3.ap-northeast-2.amazonaws.com/board/2cfc7479eda4cbc7ffdecc6081f496d6"); */
+    /* background-size: contain; */
+}
+
+.container {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 10px #f56a6a;
+    width: 40%;
+    text-align: center;
+}
+
+.container hr{
+    width: 60%;
+    margin-bottom: 7%;
+    border-top: 1px solid #bbb;
+    border-bottom: 1px solid #fff;
+    border-style: dashed;
+}
+
+/* 제목 */
+h2 {
+    margin-bottom: 5%;
+}
+
+/* --------닉네임 지정 --------*/
+.form-group {
+    margin-bottom: 8%;
+    text-align: left;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+/* 폼 안의 텍스트 */
+label {
+    display: block;
+    margin-bottom: 1%;
+    margin-left: 3%;
+    font-weight: bold;
+}
+
+/* -------------닉네임 받은 입력값 ------------- */
+input[type="text"], input[type="file"] {
+    width: 60%;
+    padding: 8px;
+    box-sizing: border-box;
+    border-radius: 20px;
+    transition: all 0.3s ease; /* 부드러운 애니메이션 효과를 위해 추가 */
+}
+
+input[type="text"]:hover {
+    width: 65%; 
+}
+
+/* ------------- 등록한 사진 미리보기 ------------ */
+.preview {
+    margin: 5% 0;
+    display: flex;
+    justify-content: center;
+}
+
+#preview-img {
+    max-width: 100%;
+    max-height: 200px;
+    display: none;
+    border-radius: 20px;
+}
+
+/* --------- 완료 버튼 --------------- */
+button {
+    background-color: #f56a6a;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* 버튼 이벤트 */
+button:hover {
+    background-color: #ef5151;
+}

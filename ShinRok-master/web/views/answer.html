@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ question.BOARD_TITLE }}</title>
+    <script src="https://kit.fontawesome.com/71a327e855.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../public/answer.css">
+</head>
+
+<body>
+    <!-- 최상단 배너 -->
+    <section id="banner">
+        <div class="content">
+            <header>
+                <img class="murukLogo"
+                    src="https://jsh-1.s3.ap-northeast-2.amazonaws.com/board/2cfc7479eda4cbc7ffdecc6081f496d6" alt="">
+            </header>
+        </div>
+    </section>
+
+    <!-- 왼쪽 사이드바 -->
+    <aside class="leftSidebar">
+        <nav>
+            <ul>
+                <li><a href="/">HOME</a></li>
+                <li class="profile"><a href="#">Profile</a></li>
+                <li><a href="/board/freeList">자유게시판</a></li>
+                <li><a href="/board/bragList">자랑하기</a></li>
+                <li><a href="/board/hot">인기글</a></li>
+                <li><a href="/board/queslist">질문게시판</a></li>
+            </ul>
+        </nav>
+        <!-- 아래쪽 사이드바(페이지 이동) -->
+        <nav class="underSidebar">
+            <ul>
+                <li><a href="/diary">Diary</a></li>
+                <li><a href="/predict">병충해 진단</a></li>
+                <li><a href="/dictionary/home">식물 도감</a></li>
+                <li>
+                    <form id="myPageForm" action="/myPage/info" method="post">
+                        <a href="#" onclick="document.getElementById('myPageForm').submit(); return false;">마이페이지</a>
+                    </form>
+                    <!-- <a href="/myPage/info">마이페이지</a> -->
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Body 전체 -->
+    <form action="/board/answerUpload" method="POST">
+        <!-- 게시글 상세페이지 -->
+        <table class="table">
+            
+          
+            <input type="hidden" name="user_idx" value="{{answer.user_idx}}">
+            <input type="hidden" name="board_idx" value="{{answer.board_idx}}">
+            <!-- ------------- 내용 작성 ----------------- -->
+            <div class="conheader">
+                <dt><h2>답변</h2>{{question.BOARD_TITLE}}</dt>
+                <!-- 가로선 추가 -->
+                <dd colspan="4"><div class="horizontal-line"></div></dd>
+                <dd><textarea placeholder="내용을 입력하세요" name="content"></textarea></dd>
+                
+            </div>
+
+            <!-- ----------- 이미지 파일 업로드 ------------ -->
+            <div class="fileUpload">
+                <dd>
+                    <input type="file" name="image" accept="image/*" onchange="loadFile(this)">
+                </dd>
+            </div>
+            <!-- 등록 버튼 -->
+            <div id="footer">
+                <div id="uploadBtn"><input type="submit" value="등록"></div>
+                <div id="cancelBtn"><input type="button" value="취소"></div>
+            </div>
+        </table>
+    </form>
+    <script src="../assets/js/post.js"></script>
+
+
+</body>
+
+</html>

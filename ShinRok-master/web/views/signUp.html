@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원정보</title>
+    <link rel="stylesheet" href="../public/signUp.css">
+</head>
+<body>
+    <div class="container">
+        <h2>무럭이에게 별명을 지어주세요 😊</h2>
+        <hr>
+
+        <!-- ------ 회원가입 폼 --------- -->
+        <form id="signup-form">
+            <!-- 닉네임 지정 -->
+            <div class="form-group">
+                <label for="nickname">Nickname : </label>
+                <input type="text" id="nickname" name="nickname" required>
+            </div>
+
+            <!-- 프로필 지정 -->
+            <div class="form-group">
+                <label for="profile-pic">프로필 사진 : </label>
+                <input type="file" id="profile-pic" name="profile-pic" accept="image/*" required>
+            </div>
+
+            <!-- 등록한 사진 미리보기 -->
+            <div class="preview">
+                <img id="preview-img" src="" alt="미리보기">
+            </div>
+
+            <!-- 완료 버튼 -->
+            <button type="submit">✨가입완료✨</button>
+        </form>
+    </div>
+    <script src="../assets/js/signUp.js"></script>
+</body>
+</html>

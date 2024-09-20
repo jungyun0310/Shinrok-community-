@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>세부정보</title> 
+    <script src="https://kit.fontawesome.com/71a327e855.js" crossorigin="anonymous"></script>
+    <!-- font awesome 오류 났을때 fas / fab (brand 이미지일 경우) 앞에 추가하여 해결 _버전 오류 -->
+
+    <link rel="stylesheet" href="../public/dictDetail.css">
+
+    <link rel="stylesheet" href="../public/main.css" />
+</head>
+
+<body>
+    <!-- Header -->
+    <header id="header">
+        <a href="/" class="logo"><img src="https://jsh-1.s3.ap-northeast-2.amazonaws.com/test/KakaoTalk_20240722_163631321_07.png" alt="무럭이">
+            <strong>MURUK </strong> <span>by ShinRok</span></a>
+        <ul class="icons">
+            {% if user %}
+            <li><a href="#">{{user.nick}}님 환영합니다.</a></li>
+            {% else %}
+            <li><a href="#">로그인 후 이용해주세요.</a></li>
+            {% endif %}
+            <li>
+                <form id="myPageForm" action="/myPage/info" method="post">
+                    <a href="#" onclick="document.getElementById('myPageForm').submit(); return false;">마이페이지</a>
+                </form>
+                <!-- <li><a href="/myPage/info" id="myPageLink">마이페이지</a></li> --> 
+            </li>
+            {% if user %}
+            <div class="kakaoLogout">
+                <a href="/user/logout">로그아웃<img src=""></a>
+            </div>
+            {% else %}
+            <div class="kakaoLogin">
+                <a href="/user/login"><img src="https://jsh-1.s3.ap-northeast-2.amazonaws.com/test/kakao_login_small+(1).png"></a>
+            </div>
+            {% endif %}
+        </ul>
+    </header>
+
+    <!-- ------------------- 최상단 배너 ----------------------- -->
+    <section id="Banner">
+        <div class="content">
+            <header>
+                <img class="murukLogo" src="https://jsh-1.s3.ap-northeast-2.amazonaws.com/board/0f124f526ead2c6d041a0e16c5439fa5" alt="">
+            </header>
+        </div>
+    </section>
+        
+    <!-- ------------------ 왼쪽 사이드바 ---------------------- -->
+    <aside class="leftSidebar">
+        <nav class="topsidebar">
+            <ul>
+                <!-- <li><a href="/plusPost"><button id="postingBtn"><i class="fa-solid fa-pen-to-square"></i> 게시글쓰기</button></a></li> -->
+                <!-- 메인으로 돌아가는 버튼 -->
+                <li><a href="/" id="homeLink">HOME</a></li>
+                <li><a href="/board/freeList" id="freeListLink">자유게시판</a></li>
+                <li><a href="/board/bragList" id="bragListLink">자랑하기</a></li>
+                <li><a href="/board/hot" id="hotListLink">인기글</a></li>
+                <li><a href="/board/queslist" id="quesListLink">질문게시판</a></li>
+            </ul>
+        </nav>
+
+        <!-- ----------------- 아래쪽 사이드바(페이지 이동) ----------------- -->
+        <nav class="underSidebar">
+            <ul>
+                <li><a href="/diary" id="diaryLink">Diary</a></li>
+                <li><a href="/predict" id="predictLink">병충해 진단</a></li>
+                <li><a href="/dictionary/home" id="dictionaryLink">식물 도감</a></li>
+                <li>
+                    <form id="myPageForm" action="/myPage/info" method="post">
+                        <a href="#" onclick="document.getElementById('myPageForm').submit(); return false;">마이페이지</a>
+                    </form>
+                    <!-- <a href="/myPage/info">마이페이지</a> -->
+                </li>
+            </ul>
+        </nav>
+        
+    </aside>
+
+<!-- ----------------------------- Body 전체 ------------------------------------------------------------------------------------------------------------------------------ -->
+<form action="/board/upload" method="post" class="detailForm">
+
+
+    <div id="con">
+        <!-- ----------------------도감----------------------------------- -->
+
+    
+        <div id="container">
+
+            <div id="left">
+                <div id="pict"><img src="{{plantData.PLANT_IMG}}" alt="{{plantData.PLANT_NAME}}">  </div>
+                <div id="name">{{plantData.PLANT_NAME}}</div>
+
+            </div>
+        
+            
+            <div id="right">
+                <div id="sebu">[ 설명 ]</div>
+                <div>{% if plantData.PLANT_EXPL %}{{plantData.PLANT_EXPL}}{% else %}자료 준비 중입니다{% endif %}</div><br>
+                <div id="care">[ 관리 ]</div>
+                <div>{% if plantData.PLANT_CARE %}{{plantData.PLANT_CARE}}{% else %}자료 준비 중입니다{% endif %}</div><br>
+            </div>
+            <div id="bottom"><button id="btn"><a href="/dictionary/home">목록</a></button></div> 
+        </div>
+    </div>
+        
+
+
+    <script src="../assets/js/dictDetail.js"></script>
+
+
+</body>
+</html>
